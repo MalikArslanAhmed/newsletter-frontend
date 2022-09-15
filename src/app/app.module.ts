@@ -12,11 +12,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NewsletterService } from 'src/services/newsletter.service';
 import { HttpClientModule } from '@angular/common/http';
+import {MatTableModule} from '@angular/material/table';
+import { NewsletterComponent } from './add-newsletter/newsletter/newsletter.component';
+import {MatDialogModule} from '@angular/material/dialog';
+
 @NgModule({
   declarations: [
     AppComponent,
     AddEmailComponent,
-    AddNewsletterComponent
+    AddNewsletterComponent,
+    NewsletterComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +31,9 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     MatInputModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatTableModule,
+    MatDialogModule
   ],
   providers: [
     UIHelpers,

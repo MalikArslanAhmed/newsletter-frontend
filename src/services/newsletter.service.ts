@@ -25,4 +25,22 @@ export class NewsletterService {
 
     return this.http.post<any>(url, data)
   }
+
+  addNewsletter(data: any): Observable<any> {
+    const url = `${this.baseUrl}/add-newsletter`
+
+    return this.http.post<any>(url, data)
+  }
+
+  getNewsletter(): Observable<any> {
+    const url = `${this.baseUrl}/get-newsletter`
+
+    return this.http.get<any>(url)
+  }
+
+  deleteNewsletter(data: any): Observable<any> {
+    const url = `${this.baseUrl}/delete-newsletter`
+
+    return this.http.post<any>(url, data)
+  }
 }

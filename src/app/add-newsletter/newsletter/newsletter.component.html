@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Add Newletter</h1>
+<div mat-dialog-content>
+    <form [formGroup]="addNewsletterForm" #f="ngForm">
+        <div class="form-data">
+            <mat-form-field class="full-width" appearance="fill">
+                <mat-label>Name</mat-label>
+                <input type="text" matInput formControlName="name" placeholder="Enter Name">
+                <mat-error *ngIf="g['name'].errors?.['required']">
+                    Name is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onNoClick()">cancel</button>
+    <button mat-raised-button color="primary" (click)="submit()" [disabled]="addNewsletterForm.invalid">Submit</button>
+
+</div>

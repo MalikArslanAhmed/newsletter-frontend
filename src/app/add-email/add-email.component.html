@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="heading">
+        <h1>Newsletter Subscription</h1>
+    </div>
+    <div class="forms">
+        <h3 *ngIf="successMsg" class="success">{{successMsg}}</h3>
+        <h3 *ngIf="errorMsg" class="error">{{errorMsg}}</h3>
+        <form [formGroup]="addEmailForm" #f="ngForm">
+            <div class="form-data">
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput formControlName="email" placeholder="Enter Email to subscribe">
+                    <mat-error *ngIf="g['email'].errors?.['required']">
+                        Email is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <button mat-raised-button color="primary" [disabled]="addEmailForm.invalid || apiCall" type="button"
+                    (click)="subscribe()">Subscribe</button>
+            </div>
+        </form>
+        <form [formGroup]="deleteEmailForm" #f="ngForm">
+            <div class="form-data">
+                <mat-form-field class="full-width" appearance="fill">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput formControlName="email" placeholder="Enter Email to unsubscribe">
+                    <mat-error *ngIf="g['email'].errors?.['required']">
+                        Email is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <button mat-raised-button color="warn" [disabled]="deleteEmailForm.invalid || apiCall" type="button"
+                    (click)="unsubscribe()">UnSubscribe</button>
+            </div>
+        </form>
+    </div>
+    <div class="news-section">
+        <button mat-raised-button color="primary" [routerLink]="['/newsletter']"
+            routerLinkActive="router-link-active">Add Newsletter</button>
+    </div>
+</div>

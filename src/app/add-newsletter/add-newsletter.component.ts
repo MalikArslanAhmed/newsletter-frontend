@@ -4,6 +4,20 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { NewsletterComponent } from './newsletter/newsletter.component';
 import { MatTable } from '@angular/material/table';
 
+export interface DBResp {
+  data?: data;
+  msg?: string;
+  success: boolean;
+  errors?: errors
+}
+export interface data {
+  id: number
+  email: string
+}
+export interface errors {
+  general: string
+}
+
 @Component({
   selector: 'app-add-newsletter',
   templateUrl: './add-newsletter.component.html',
@@ -16,6 +30,8 @@ export class AddNewsletterComponent implements OnInit {
   errorMsg = ''
   successMsg = ''
   interval = null
+  apiCall = false
+
   constructor(
     private api: NewsletterService,
     public dialog: MatDialog
@@ -32,7 +48,6 @@ export class AddNewsletterComponent implements OnInit {
   openAddDialog() {
     const dialogRef = this.dialog.open(NewsletterComponent, {
       width: '450px',
-      // data: {name: this.name, animal: this.animal},
     });
 
     dialogRef.afterClosed().subscribe(resp => {
@@ -44,10 +59,7 @@ export class AddNewsletterComponent implements OnInit {
       } else {
         this.errorMsg = resp?.errors.general
       }
-      this.interval = setTimeout(() => {
-        this.successMsg = this.errorMsg = ''
-        clearTimeout(this.interval)
-      }, 5000);
+      this.setTimeout()
     });
   }
 
@@ -55,10 +67,13 @@ export class AddNewsletterComponent implements OnInit {
     const params = {
       id: id
     }
-    this.api.deleteNewsletter(params).subscribe((resp: any) => {
+    const index = this.newsLetters.findIndex(r => r.id === id)
+    this.apiCall = true
+    this.api.deleteNewsletter(params).subscribe((resp: DBResp) => {
+      this.apiCall = false
+
       if (resp?.success) {
         this.successMsg = resp?.msg
-        const index = this.newsLetters.findIndex(r => r.id === id)
         if (index > -1) {
           this.newsLetters.splice(index, 1)
         }
@@ -66,10 +81,13 @@ export class AddNewsletterComponent implements OnInit {
       } else {
         this.errorMsg = resp?.errors.general
       }
-      this.interval = setTimeout(() => {
-        this.successMsg = this.errorMsg = ''
-        clearTimeout(this.interval)
-      }, 5000);
+      this.setTimeout()
     })
+  }
+  setTimeout() {
+    this.interval = setTimeout(() => {
+      this.successMsg = this.errorMsg = ''
+      clearTimeout(this.interval)
+    }, 5000);
   }
 }

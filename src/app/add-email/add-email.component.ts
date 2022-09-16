@@ -2,7 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UIHelpers } from 'src/helpers/ui-helpers';
 import { NewsletterService } from 'src/services/newsletter.service';
-
+export interface DBResp {
+  data?: data;
+  msg?: string;
+  success: boolean;
+  errors?: errors
+}
+export interface data {
+  id: number
+  email: string
+}
+export interface errors {
+  general: string
+}
 @Component({
   selector: 'app-add-email',
   templateUrl: './add-email.component.html',
@@ -42,7 +54,7 @@ export class AddEmailComponent implements OnInit {
 
   subscribe() {
     this.apiCall = true
-    this.api.addEmail(this.addEmailForm.value).subscribe((resp: any) => {
+    this.api.addEmail(this.addEmailForm.value).subscribe((resp: DBResp) => {
       if (resp.success) {
         this.successMsg = resp.msg
       } else {
@@ -50,16 +62,13 @@ export class AddEmailComponent implements OnInit {
       }
       this.apiCall = false
       this.addEmailForm.reset()
-     this.interval = setTimeout(() => {
-        this.successMsg = this.errorMsg = ''
-        clearTimeout(this.interval)
-      }, 5000);
+      this.setTimeout()
     })
   }
 
   unsubscribe() {
     this.apiCall = true
-    this.api.deleteEmail(this.deleteEmailForm.value).subscribe((resp: any) => {
+    this.api.deleteEmail(this.deleteEmailForm.value).subscribe((resp: DBResp) => {
       if (resp.success) {
         this.successMsg = resp.msg
       } else {
@@ -67,10 +76,14 @@ export class AddEmailComponent implements OnInit {
       }
       this.apiCall = false
       this.deleteEmailForm.reset()
-      setTimeout(() => {
-        this.successMsg = this.errorMsg = ''
-        clearTimeout(this.interval)
-      }, 5000);
+      this.setTimeout()
     })
+  }
+
+  setTimeout() {
+    this.interval = setTimeout(() => {
+      this.successMsg = this.errorMsg = ''
+      clearTimeout(this.interval)
+    }, 5000);
   }
 }

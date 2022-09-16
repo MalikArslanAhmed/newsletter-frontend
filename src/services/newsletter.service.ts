@@ -11,7 +11,6 @@ export class NewsletterService {
   constructor(
     public http: HttpClient,
   ) {
-
   }
 
   addEmail(data: any): Observable<any> {
